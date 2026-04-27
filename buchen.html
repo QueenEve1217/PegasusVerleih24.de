@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Pegasus Verleih</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom, #87ceeb, #ffffff);
+      text-align: center;
+    }
+
+    header {
+      background: #4a90e2;
+      color: white;
+      padding: 20px;
+    }
+
+    nav {
+      background: #333;
+      padding: 10px;
+      position: sticky;
+      top: 0;
+    }
+
+    nav a {
+      color: white;
+      margin: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #ffd700;
+    }
+
+    section {
+      padding: 40px 20px;
+    }
+
+    .hero img {
+      width: 300px;
+      border-radius: 15px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    button {
+      background: #4a90e2;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #a235bd;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Pegasus Verleih</h1>
+  <p>Es tut nicht weh bei Pegasusverleih.24.de!</p>
+</header>
+
+<nav>
+  <a href="index.html">Start</a>
+  <a href="buchen.html">Buchen</a>
+  <a href="kontakt.html">Kontakt</a>
+</nav>
+
+<!-- BUCHEN -->
+<section id="buchen">
+
+  <h2>Pegasus buchen</h2>
+
+  <div class="card">
+    <h3>Mini Pegasus</h3>
+    <p>Perfekt für jeden Kindergeburtstag</p>
+    <p><strong>50€ / Stunde</strong></p>
+    <button onclick="buchen('Mini Pegasus')">Buchen</button>
+  </div>
+
+  <div class="card">
+    <h3>normaler Pegasus</h3>
+    <p>Schneller & spektakulärer Flug</p>
+    <p><strong>120€ / Stunde</strong></p>
+    <button onclick="buchen('Normaler Pegasus')">Buchen</button>
+  </div>
+
+  <div class="card">
+    <h3>Mega Pegasus</h3>
+    <p>Atemberaubend</p>
+    <p><strong>250€ / Stunde</strong></p>
+    <button onclick="buchen('Mega Pegasus')">Buchen</button>
+  </div>
+
+</section>
+
+<script>
+  function buchen(typ) {
+    alert("Du hast den " + typ + " gebucht!");
+  }
+</script>
+
+</body>
+</html>
