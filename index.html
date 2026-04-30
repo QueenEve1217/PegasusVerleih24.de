@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Pegasus Verleih</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 
   <style>
@@ -41,34 +42,9 @@
       padding: 40px 20px;
     }
 
-    .card {
-      background: white;
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 400px;
+    img {
+      max-width: 300px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    }
-
-    button {
-      background: #4a90e2;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px;
-    }
-
-    button:hover {
-      background: #a235bd;
-    }
-
-    input {
-      padding: 10px;
-      margin: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
     }
   </style>
 </head>
@@ -81,106 +57,19 @@
 </header>
 
 <nav>
-  <a href="#">Start</a>
-  <a href="#buchen">Buchen</a>
-  <a href="#konto">Konto</a>
+  <a href="index.html">Start</a>
+  <a href="buchen.html">Buchen</a>
+  <a href="konto.html">Konto</a>
 </nav>
 
-<!-- LOGIN -->
-<section id="konto">
-  <h2>Kundenkonto</h2>
-
-  <input type="email" id="email" placeholder="Email"><br>
-  <input type="password" id="password" placeholder="Passwort"><br>
-
-  <button onclick="register()">Registrieren</button>
-  <button onclick="login()">Login</button>
-  <button onclick="logout()">Logout</button>
-
-  <p id="status">Nicht eingeloggt</p>
-</section>
-
-<!-- START -->
-<section id="start" class="hero">
+<section>
   <h2>Willkommen bei dem Pegasus Verleih deines Vertrauens</h2>
-  <p>Pegasi für jede Gelegenheit - diese Firma ist garantiert kein Scam</p>
+  <p>Pegasi für jede Gelegenheit</p>
 
   <img src="pegasus.png" alt="Pegasus">
 
   <p><strong>Versand einfach durchs Telefon</strong></p>
 </section>
-
-<!-- FIREBASE (NUR COMPAT VERSION) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDp40QWLryGV3MxS6wOyon6Y4MZDeGOTn4",
-  authDomain: "pegasusverleih.firebaseapp.com",
-  projectId: "pegasusverleih",
-  appId: "1:829520680349:web:a9eb2095c788796ede0b74"
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
-// REGISTER
-function register() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  auth.createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      document.getElementById("status").innerText = "Registriert!";
-    })
-    .catch(error => {
-      document.getElementById("status").innerText = error.message;
-    });
-}
-
-// LOGIN
-function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
-      document.getElementById("status").innerText = "Eingeloggt!";
-    })
-    .catch(error => {
-      document.getElementById("status").innerText = error.message;
-    });
-}
-
-// LOGOUT
-function logout() {
-  auth.signOut();
-  document.getElementById("status").innerText = "Ausgeloggt!";
-}
-
-// STATUS
-auth.onAuthStateChanged(user => {
-  if (user) {
-    document.getElementById("status").innerText =
-      "Eingeloggt als: " + user.email;
-  } else {
-    document.getElementById("status").innerText = "Nicht eingeloggt";
-  }
-});
-
-// BUCHEN
-function buchen(typ) {
-  const user = auth.currentUser;
-
-  if (!user) {
-    alert("Bitte erst einloggen!");
-    return;
-  }
-
-  alert("Du hast den " + typ + " gebucht!");
-}
-</script>
 
 </body>
 </html>
