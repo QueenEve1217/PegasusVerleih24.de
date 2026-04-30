@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Pegasus Rezensionen</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom, #87ceeb, #ffffff);
+      text-align: center;
+    }
+
+    header {
+      background: #4a90e2;
+      color: white;
+      padding: 20px;
+    }
+
+    input, textarea {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 250px;
+    }
+
+    button {
+      background: #4a90e2;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    button:hover {
+      background: #a235bd;
+    }
+
+    .review {
+      background: white;
+      margin: 10px auto;
+      padding: 15px;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    #reviews {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Pegasus Verleih</h1>
+  <p>Es tut nicht weh bei Pegasusverleih.24.de!</p>
+</header>
+
+<nav>
+  <a href="index.html">Start</a>
+  <a href="buchen.html">Buchen</a>
+  <a href="kontakt.html">Kontakt</a>
+  <a href="konto.html">Konto</a>
+  <a href="Rezensionen.html">Rezensionen</a>
+
+</nav>
+
+<h2>Konto</h2>
+
+<input type="email" id="email" placeholder="Email"><br>
+<input type="password" id="password" placeholder="Passwort"><br>
+
+<button onclick="register()">Registrieren</button>
+<button onclick="login()">Login</button>
+<button onclick="logout()">Logout</button>
+
+<p id="status">Nicht eingeloggt</p>
+
+<hr>
+
+<h2>Rezension schreiben</h2>
+
+<textarea id="text" placeholder="Deine Meinung..."></textarea><br>
+<button onclick="sendReview()">Absenden</button>
+
+<h2>Rezensionen</h2>
+<div id="reviews"></div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDp40QWLryGV3MxS6wOyon6Y4MZDeGOTn4",
+  authDomain: "pegasusverleih.firebaseapp.com",
+  projectId: "pegasusverleih"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+
+// LOGIN / REGISTER
+function register() {
+  auth.createUserWithEmailAndPassword(email.value, password.value)
+    .then(() => status("Registriert!"))
+    .catch(e => status(e.message));
+}
+
+function login() {
+  auth.signInWithEmailAndPassword(email.value, password.value)
+    .then(() => status("Eingeloggt!"))
+    .catch(e => status(e.message));
+}
+
+function logout() {
+  auth.signOut();
+}
+
+auth.onAuthStateChanged(user => {
+  if (user) {
+    status("Eingeloggt als: " + user.email);
+  } else {
+    status("Nicht eingeloggt");
+  }
+});
+
+function status(text) {
+  document.getElementById("status").innerText = text;
+}
+
+
+// REZENSION SENDEN
+function sendReview() {
+  const user = auth.currentUser;
+  const text = document.getElementById("text").value;
+
+  if (!user) {
+    alert("Bitte einloggen!");
+    return;
+  }
+
+  if (!text) return;
+
+  db.collection("reviews").add({
+    text: text,
+    user: user.email,
+    time: Date.now()
+  });
+
+  document.getElementById("text").value = "";
+}
+
+
+// REZENSIONEN LADEN
+db.collection("reviews").orderBy("time", "desc")
+  .onSnapshot(snapshot => {
+    const container = document.getElementById("reviews");
+    container.innerHTML = "";
+
+    snapshot.forEach(doc => {
+      const r = doc.data();
+
+      container.innerHTML += `
+        <div class="review">
+          <strong>${r.user}</strong><br>
+          ${r.text}
+        </div>
+      `;
+    });
+  });
+</script>
+
+</body>
+</html>
